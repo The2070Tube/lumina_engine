@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Chatbot</title>
+<style>
+  /* Base styles for all div elements */
+  body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    background-color: #22245B; /* Match the background color to ensure no white lines */
+}
+
+/* Global div styling */
+div {
+    font-family: Calibri, sans-serif;
+    background-color: inherit; /* Ensure the background is inherited */
+    color: rgb(0, 0, 0); /* Text color */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+/* Styling for the navigation */
+nav {
+    display: flex;
+    justify-content: space-around;
+}
+
+/* Styling for links with the 'items' class and navbar links */
+.navbar1 a, .items {
+    text-decoration: none !important;  /* Remove underline from links */
+    color: black;        /* Set text color to black */
+    background: none;      /* Ensure no background color is applied */
+}
+
+/* Ensure navbar links remain black on hover and after being visited */
+.navbar1 a:hover, .navbar1 a:visited {
+    color: black;
+    text-decoration: none;
+}
+
+/* Styling for the heart element */
+.heart {
+    padding-top: 12px;
+    transition: 0.25s;
+}
+
+.heart:hover {
+    transform: scale(1.825);
+}
+
+/* Styling for items class */
+.items {
+    font-weight: bold;
+    transition: 0.25s;
+    padding-top: 10px;
+}
+
+.items:hover {
+    transform: scale(1.4);
+    padding: 10px;
+    background-color: #00994C;
+    color: white;
+}
+
+/* Styling for the navbar */
+.navbar1 {
+    width: 100%;        /* Stretch the navbar to the full width of the screen */
+    margin: 0;         /* Remove default margin */
+    padding: 0;        /* Remove default padding */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    padding-bottom: 15px; /* Add padding at the bottom */
+}
+
+/* Styling for the whole navigation container */
+.wholenav {
+    background-color: #CCFFE5; /* Light green background */
+    margin: 0; /* Ensure no extra margin */
+    padding: 8px 0 0 0; /* Remove padding except for top */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+/* Styling for welcome-background */
+.welcome-background {
+    background-color: #22245B; /* Background color */
+    width: 100%; /* Make sure it spans the full width of the parent container */
+    margin: 0; /* Remove any margin to ensure it touches the edges */
+    padding: 20px 0; /* Add some vertical padding */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    padding-bottom: 100px;
+}
+
+/* Ensure h1 in welcome-background has no top margin */
+.welcome-background h1 {
+    margin-top: 0;
+}
+
+/* Styling for announce elements */
+.announce {
+    font-family: 'Andale Mono', monospace;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    color: white !important;
+    padding-top: 90px;
+}
+
+.announce2 {
+    font-family: 'Lexend', sans-serif;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    color: white !important;
+    padding-bottom: 125px;
+}
+
+/* Styling for quote and author elements */
+.quote {
+    font-family: 'Courier New', Courier, monospace;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    color: white !important;
+}
+
+.author {
+    font-family: 'Courier New', Courier, monospace;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    color: white !important;
+    padding-bottom: 70px;
+}
+
+.ping {
+    background-color: #22245B;
+    margin: 0; /* Ensure no extra margin */
+    padding: 0; /* Adjust padding if needed */
+    text-align: center;
+}
+
+/* Typing animation heading */
+#typing-heading {
+    font-family: 'Andale Mono', monospace;
+    color: white;
+    text-align: center;
+    overflow: hidden;
+    white-space: nowrap;
+    margin: 0 auto;
+    letter-spacing: .15em;
+    display: inline-block;
+    position: relative;
+}
+
+#typing-heading::after {
+    content: '|';
+    position: absolute;
+    right: -10px; /* Adjust this value to position the cursor correctly */
+    animation: blink-caret .75s step-end infinite;
+}
+
+@keyframes blink-caret {
+    from, to { color: transparent; }
+    50% { color: white; }
+}
+
+/* Chat container styles */
+#chat-container {
+    width: 90%;
+    max-width: 800px;
+    margin: 20px auto;
+    background-color: rgba(0, 153, 153, 0.8); /* Slightly transparent version of the background color */
+    border-radius: 20px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3); /* Increased shadow blur and opacity */
+    overflow: hidden; /* Ensure content does not overflow */
+}
+
+#chat-container.card {
+    width: 250px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3); /* Consistent shadow effect */
+    text-align: center;
+}
+
+#chat-history {
+    height: 300px;
+    overflow-y: auto;
+    padding: 20px;
+    color: white;
+    background-color: #18193C;
+}
+
+#chat-form {
+    display: flex;
+    padding: 10px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    background-color: #0D0E21; /* Slightly darker than the chat container */
+    
+    
+}
+
+#user-input {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid white;
+    border-radius: 10px;
+    font-size: 16px;
+    resize: none;
+    background-color: #393C8D;
+    color: white;
+    padding-top: 10px;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+#user-input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+#send-button {
+    padding: 10px 20px;
+    margin-left: 10px;
+    background-color: #898BCB;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+#send-button:hover {
+    background-color: #CACBE5;
+}
+
+.what {
+    align-items: center;
+    background-color: #22245B;
+    text-align: center;
+}
+
+#chat-history .user-message {
+    color: white; /* Green color for user messages */
+    margin: 10px 0;
+    font-weight: bold;
+    text-align: right;
+    background: none;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+#chat-history .bot-message {
+    font-family: 'Courier New', Courier, monospace;
+    color: #FFFFFF; /* White color for bot messages */
+    margin: 10px 0;
+    text-align: left;
+    background: none;
+}
+
+.bottombar {
+    background-color: #009999;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    font-weight: normal !important;
+}
+
+.left {
+    display: flex;
+    flex-direction: column;
+    background: none;
+    font-size: 13px;
+    font-weight: normal !important;
+}
+
+.right {
+    display: flex;
+    gap: 10px;
+    background: none;
+}
+
+.copyright, .myname {
+    margin: 0;
+    color: white;
+}
+
+.linkhov {
+    transition: 0.3s;
+}
+
+.linkhov:hover {
+    transform: scale(1.5);
+}
+
+.githov {
+    transition: 0.3s;
+}
+
+.githov:hover {
+    transform: scale(1.3);
+}
+
+.dark {
+    background: none;
+    align-items: center;
+    text-align: center;
+}
+
+#loader {
+    background: none;
+    background-color: #393C8D;
+    text-align: center;
+    align-items: center;
+}
+
+.bothead {
+    align-items: center;
+    text-align: center;
+    padding-top: 12px;
+}
+
+.right img {
+    width: 70px;
+    height: auto;
+}
+
+
+  </style>
+</head>
+<body>
+    <div class="wholenav">
+        <nav class="navbar1">
+            <a href="index.html"><img class="heart" src="heart.png" height="24px" width="auto"></a>
+            <a href="index.html"><div class="items">Home</div></a>
+            <a href="about.html"><div class="items">About</div></a>
+            <a href="#"><div class="items">Program</div></a>
+            <a href="#"><div class="items">Other</div></a>
+        </nav>
+    </div>
+    <div class="welcome-background">
+        <h1 class="announce">EnviroGen Beta</h1>
+        <h3 class="announce2">Version 1.2.11</h3>
+        <div class="what">
+            <h2 id="typing-heading">What medical issue do you have today?</h2>
+        </div>
+
+        <div id="chat-container">
+            <h1 class="bothead">Turbo</h1>
+            <div id="chat-history"></div>
+            <form id="chat-form">
+                <input type="text" id="user-input" placeholder="Enter your message">
+                <button type="submit" id="send-button">Send</button>
+            </form>
+            </div>
+            <br>
+            <br>
+            <div id="loader">
+            <img src="loader.gif" width="150px" alt="Loading...">
+            </div>
+        </div>
+        
+        <h3 class="quote">"The good physician treats the disease. The great physician treats the patient who has the disease."</h3>
+        <h3 class="author">William Osler</h3>
+    </div>
+        <div class="bottombar">
+            <div class="left">
+                <h2 class="copyright">Copyright 2024 - All Rights Reserved</h2>
+                <h2 class="myname">EnviroGen</h2>
+            </div>
+            <div class="right">
+                <a href="https://www.linkedin.com/in/nafis-mahim-a206ab319/"><img class="linkhov" src="linkedin.png" alt="LinkedIn" width="80" height="70"></a>
+                <a href="https://github.com/The2070Tube"><img class="githov" src="github.png" alt="GitHub" width="40" height="70"></a>
+            </div>
+        </div>
+
+
+  <script>
+    const chatHistory = document.getElementById('chat-history');
+    const userInput = document.getElementById('user-input');
+    const form = document.getElementById('chat-form');
+
+    async function sendMessage() {
+      const userMessage = userInput.value;
+      userInput.value = ''; // Clear input field
+      console.log(userMessage)
+      try {
+        const response = await fetch('/chat', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ userInput: userMessage }),
+        });
+
+        const data = await response.json();
+        console.log(data)
+        const botMessage = data.response;
+        console.log(botMessage)
+        // Add chat message to the chat history
+        chatHistory.innerHTML += `<div class="user-message">${userMessage}</div>`;
+        chatHistory.innerHTML += `<div class="bot-message">${botMessage}</div>`;
+
+        // Scroll to the bottom of the chat history
+        chatHistory.scrollTop = chatHistory.scrollHeight;
+      } catch (error) {
+        console.error('Error:', error);
+        // Handle errors gracefully, e.g., display an error message to the user
+      }
+    }
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault(); // Prevent form submission
+      const loader = document.getElementById('loader');
+      loader.style.display = 'block'; // Show the loader
+      sendMessage().finally(() => {
+      loader.style.display = 'none'; // Hide the loader after the message is sent
+    });;
+    });
+  </script>
+</body>
+</html>
