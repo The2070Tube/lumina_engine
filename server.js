@@ -59,10 +59,10 @@ async function runChat(userInput) {
 }
 
 app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/index.html');
+  res.sendFile(__dirname + '/public/index.html');
 });
-app.get('/loader.gif', (req, res) => {
-  res.sendFile(__dirname + '/loader.gif');
+app.get('/public/loader.gif', (req, res) => {
+  res.sendFile(__dirname + '/public/loader.gif');
 });
 app.post('/chat', async (req, res) => {
   try {
