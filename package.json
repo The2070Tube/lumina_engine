@@ -9,7 +9,9 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node server.js",
+    "build": "echo \"No build step needed for this project.\"",
+    "vercel-build": "npm install && npm install @google/generative-ai express"
   },
   "keywords": [],
   "author": "",
