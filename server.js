@@ -1,13 +1,16 @@
-// node --version # Should be >= 18
-// npm install @google/generative-ai express
-
 const express = require('express');
+const path = require('path');
+const cors = require('cors');
 const { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } = require('@google/generative-ai');
-const dotenv = require('dotenv').config()
+require('dotenv').config();
 
 const app = express();
 const port = process.env.PORT || 3000;
+
+app.use(cors());
 app.use(express.json());
+app.use(express.static('public'));
+
 const MODEL_NAME = "gemini-1.5-pro";
 const API_KEY = process.env.API_KEY;
 
@@ -59,15 +62,13 @@ async function runChat(userInput) {
 }
 
 app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/public/index.html');
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
-app.get('/public/loader.gif', (req, res) => {
-  res.sendFile(__dirname + '/public/loader.gif');
-});
+
 app.post('/chat', async (req, res) => {
   try {
     const userInput = req.body?.userInput;
-    console.log('incoming /chat req', userInput)
+    console.log('incoming /chat req', userInput);
     if (!userInput) {
       return res.status(400).json({ error: 'Invalid request body' });
     }
@@ -76,7 +77,7 @@ app.post('/chat', async (req, res) => {
     res.json({ response });
   } catch (error) {
     console.error('Error in chat endpoint:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ error: 'Internal Server Error', details: error.message });
   }
 });
 
