@@ -149,6 +149,9 @@ nav {
     letter-spacing: .15em;
     display: inline-block;
     position: relative;
+    border-right: .15em solid white; /* Cursor */
+    width: 0; /* Start with width 0 */
+    animation: typing 2s steps(24, end) forwards, blink-caret 0.75s step-end infinite;
 }
 
 #typing-heading::after {
@@ -161,6 +164,17 @@ nav {
 @keyframes blink-caret {
     from, to { color: transparent; }
     50% { color: white; }
+}
+
+@keyframes typing {
+    from { width: 0; }
+    to { width: 34%; } /* Full width for the text */
+}
+
+/* Blinking cursor animation */
+@keyframes blink-caret {
+    from, to { border-color: transparent; }
+    50% { border-color: white; }
 }
 
 /* Chat container styles */
@@ -342,7 +356,7 @@ nav {
         </div>
 
         <div id="chat-container">
-            <h1 class="bothead">Turbo V1</h1>
+            <h1 class="bothead">Lumina V1</h1>
             <div id="chat-history"></div>
             <form id="chat-form">
                 <input type="text" id="user-input" placeholder="Enter your message">
